@@ -1,4 +1,4 @@
-console.clear();
+//console.clear();
 
 let contentTitle;
 
@@ -8,13 +8,9 @@ function dynamicClothingSection(ob) {
   boxDiv.id = "box";
 
   let boxLink = document.createElement("a");
-  // boxLink.href = '#'
   boxLink.href = "/contentDetails.html?" + ob.id;
-  // console.log('link=>' + boxLink);
 
   let imgTag = document.createElement("img");
-  // imgTag.id = 'image1'
-  // imgTag.id = ob.photos
   imgTag.src = ob.preview;
 
   let detailsDiv = document.createElement("div");
@@ -42,24 +38,15 @@ function dynamicClothingSection(ob) {
   return boxDiv;
 }
 
-//  TO SHOW THE RENDERED CODE IN CONSOLE
-// console.log(dynamicClothingSection());
-
-// console.log(boxDiv)
-
 let mainContainer = document.getElementById("mainContainer");
 let containerClothing = document.getElementById("containerClothing");
 let containerAccessories = document.getElementById("containerAccessories");
-// mainContainer.appendChild(dynamicClothingSection('hello world!!'))
-
-// BACKEND CALLING
 
 let httpRequest = new XMLHttpRequest();
 
 httpRequest.onreadystatechange = function() {
   if (this.readyState === 4) {
     if (this.status == 200) {
-      // console.log('call successful');
       contentTitle = JSON.parse(this.responseText);
       if (document.cookie.indexOf(",counter=") >= 0) {
         var counter = document.cookie.split(",")[1].split("=")[1];
@@ -67,22 +54,21 @@ httpRequest.onreadystatechange = function() {
       }
       for (let i = 0; i < contentTitle.length; i++) {
         if (contentTitle[i].isAccessory) {
-          console.log(contentTitle[i]);
           containerAccessories.appendChild(
             dynamicClothingSection(contentTitle[i])
           );
         } else {
-          console.log(contentTitle[i]);
           containerClothing.appendChild(
             dynamicClothingSection(contentTitle[i])
           );
         }
       }
     } else {
-      console.log("call failed!");
+      console.error("HTTP request failed with status:", this.status);
     }
   }
 };
+
 httpRequest.open(
   "GET",
   "https://5d76bf96515d1a0014085cf9.mockapi.io/product",
